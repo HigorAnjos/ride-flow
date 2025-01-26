@@ -23,10 +23,13 @@ namespace Domain.Plans.Base
             if (rental.ReturnDate == null)
                 return 0;
 
-            if (rental.ReturnDate < rental.ExpectedEndDate)
+            DateTime returnDate = rental.ReturnDate.Value.Date;
+            DateTime expectedEndDate = rental.ExpectedEndDate.Date;
+
+            if (returnDate < expectedEndDate)
                 return CalculateEarlyReturnPenalty(rental);
 
-            if (rental.ReturnDate > rental.ExpectedEndDate)
+            if (returnDate > expectedEndDate)
                 return CalculateLateReturnPenalty(rental);
 
             return 0;
