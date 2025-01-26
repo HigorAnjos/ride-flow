@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Scripts\DeliveryPerson\Add.sql" />
+	  <None Remove="Scripts\DeliveryPerson\GetAll.sql" />
+	  <None Remove="Scripts\DeliveryPerson\GetById.sql" />
+	  <None Remove="Scripts\DeliveryPerson\Update.sql" />
+	  <None Remove="Scripts\Motorcycle\Add.sql" />
+	  <None Remove="Scripts\Motorcycle\Delete.sql" />
+	  <None Remove="Scripts\Motorcycle\GetAll.sql" />
+	  <None Remove="Scripts\Motorcycle\GetById.sql" />
+	  <None Remove="Scripts\Motorcycle\GetByLicensePlate.sql" />
+	  <None Remove="Scripts\Motorcycle\Update.sql" />
+	  <None Remove="Scripts\Rental\Add.sql" />
+	  <None Remove="Scripts\Rental\GetById.sql" />
+	  <None Remove="Scripts\Rental\UpdateReturnDate.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Scripts\DeliveryPerson\Add.sql" />
+	  <EmbeddedResource Include="Scripts\DeliveryPerson\GetAll.sql" />
+	  <EmbeddedResource Include="Scripts\DeliveryPerson\GetById.sql" />
+	  <EmbeddedResource Include="Scripts\DeliveryPerson\Update.sql" />
+	  <EmbeddedResource Include="Scripts\Motorcycle\Add.sql" />
+	  <EmbeddedResource Include="Scripts\Motorcycle\Delete.sql" />
+	  <EmbeddedResource Include="Scripts\Motorcycle\GetAll.sql" />
+	  <EmbeddedResource Include="Scripts\Motorcycle\GetById.sql" />
+	  <EmbeddedResource Include="Scripts\Motorcycle\GetByLicensePlate.sql" />
+	  <EmbeddedResource Include="Scripts\Motorcycle\Update.sql" />
+	  <EmbeddedResource Include="Scripts\Rental\Add.sql" />
+	  <EmbeddedResource Include="Scripts\Rental\GetById.sql" />
+	  <EmbeddedResource Include="Scripts\Rental\UpdateReturnDate.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.35" />
+		<PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+		<PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="$(MassTransit_Extensions_DependencyInjection)" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+		<PackageReference Include="MassTransit" Version="$(MassTransit_Version)" />
+		<PackageReference Include="MassTransit.Newtonsoft" Version="$(MassTransit_Version)" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="$(MassTransit_Version)" />
+		<PackageReference Include="MongoDB.Driver" Version="3.1.0" />
+		<PackageReference Include="Moq" Version="4.18.4" />
+		<PackageReference Include="Npgsql" Version="9.0.2" />
+		<PackageReference Include="Serilog" Version="$(Serilog_Version)" />
+		<PackageReference Include="System.Data.SqlClient" Version="$(System_Data_SqlClient)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Application\Application.csproj" />
+	</ItemGroup>
+
+</Project>

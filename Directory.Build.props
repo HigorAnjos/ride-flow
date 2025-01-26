@@ -1,0 +1,107 @@
+<Project>
+	<PropertyGroup Label="Common properties">
+		<Product>ride-flow</Product>
+		<Copyright>Copyright (c) 2023</Copyright>
+		<Authors>Ride Flow</Authors>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Label="Packages dependency versions">
+
+		<!-- Microsoft & Azure -->
+		<Microsoft_Extensions_Hosting>8.0.0</Microsoft_Extensions_Hosting>
+		<Microsoft_Extensions_Options_DataAnnotations>8.0.0</Microsoft_Extensions_Options_DataAnnotations>
+		<Microsoft_Extensions_Configuration>8.0.0</Microsoft_Extensions_Configuration>
+		<Microsoft_Extensions_Configuration_FileExtensions>8.0.1</Microsoft_Extensions_Configuration_FileExtensions>
+		<Microsoft_Extensions_Configuration_Abstractions>8.0.0</Microsoft_Extensions_Configuration_Abstractions>
+		<Microsoft_Extensions_Configuration_Json>8.0.0</Microsoft_Extensions_Configuration_Json>
+		<Microsoft_Extensions_Configuration_Binder>8.0.2</Microsoft_Extensions_Configuration_Binder>
+		<Microsoft_Extensions_DependencyInjection_Abstractions>8.0.1</Microsoft_Extensions_DependencyInjection_Abstractions>
+		<Microsoft_Identity_Client_Version>4.63.0</Microsoft_Identity_Client_Version>
+		<Microsoft_AspNetCore_Http_Abstractions>2.2.0</Microsoft_AspNetCore_Http_Abstractions>
+		<Microsoft_AspNetCore_Mvc_Versioning>5.1.0</Microsoft_AspNetCore_Mvc_Versioning>
+		<Microsoft_AspNetCore_Mvc_Versioning_ApiExplorer>5.1.0</Microsoft_AspNetCore_Mvc_Versioning_ApiExplorer>
+		<Microsoft_OpenApi>1.6.17</Microsoft_OpenApi>
+
+		<!-- Flurl -->
+		<Flurl_Http>4.0.2</Flurl_Http>
+		<Flurl_Http_Newtonsoft>0.9.1</Flurl_Http_Newtonsoft>
+
+		<!-- AspNetCore HealthChecks -->
+		<AspNetCore_HealthChecks_Version>6.0.2</AspNetCore_HealthChecks_Version>
+
+		<!--Newtonsoft-->
+		<Newtonsoft_Version>13.0.2-beta2</Newtonsoft_Version>
+		<ContractResolvers_Version>2.0.0</ContractResolvers_Version>
+		<Microsoft_Mvc_NewtonsoftJson_Version>6.0.0</Microsoft_Mvc_NewtonsoftJson_Version>
+
+		<!--Swashbuckle-->
+		<Swashbuckle_Version>6.7.0</Swashbuckle_Version>
+		<Swashbuckle_AspNetCore_Annotations>6.7.0</Swashbuckle_AspNetCore_Annotations>
+
+		<!--Cache-->
+		<RedLock>2.3.2</RedLock>
+		<StackExchange_Redis>2.7.33</StackExchange_Redis>
+		<StackExchange_Redis_Extensions_Core>10.2.0</StackExchange_Redis_Extensions_Core>
+		<StackExchange_Redis_Extensions_System_Text_Json>10.2.0</StackExchange_Redis_Extensions_System_Text_Json>
+
+		<!--Serilog-->
+		<Serilog_Version>4.0.1</Serilog_Version>
+		<Serilog_AspNetCore_Version>8.0.2</Serilog_AspNetCore_Version>
+		<Serilog_Enrichers_ClientInfo>2.1.1</Serilog_Enrichers_ClientInfo>
+		<Serilog_Enrichers_CorrelationId>3.0.1</Serilog_Enrichers_CorrelationId>
+		<Serilog_Enrichers_Environment>3.0.1</Serilog_Enrichers_Environment>
+		<Serilog_Enrichers_Process>3.0.0</Serilog_Enrichers_Process>
+		<Serilog_Enrichers_Thread>4.0.0</Serilog_Enrichers_Thread>
+		<Serilog_Exceptions>8.4.0</Serilog_Exceptions>
+		<Serilog_Formatting_Elasticsearch>10.0.0</Serilog_Formatting_Elasticsearch>
+		<Serilog_Settings_Configuration>8.0.2</Serilog_Settings_Configuration>
+		<Serilog_Sinks_Async>2.0.0</Serilog_Sinks_Async>
+		<Serilog_Sinks_Console>6.0.0</Serilog_Sinks_Console>
+
+		<!--MassTransit-->
+		<MassTransit_Version>8.2.4</MassTransit_Version>
+		<MassTransit_Extensions_DependencyInjection>7.3.1</MassTransit_Extensions_DependencyInjection>
+		<MassTransit_TestFramework>8.2.4</MassTransit_TestFramework>
+
+		<!--MediatR-->
+		<MediatR>12.4.0</MediatR>
+
+		<!--Automapper-->
+		<Automapper>13.0.1</Automapper>
+
+		<!--FluentValidation-->
+		<FluentValidation>11.10.0</FluentValidation>
+		<FluentValidation_Validators_UnitTestExtension>1.11.0.2</FluentValidation_Validators_UnitTestExtension>
+
+		<!--Polly-->
+		<Polly_Version>8.4.1</Polly_Version>
+		<Microsoft_Extensions_Http_Polly_Version>7.0.4</Microsoft_Extensions_Http_Polly_Version>
+
+		<!--Test-->
+		<AutoFixture>4.18.1</AutoFixture>
+		<AutoFixture_AutoMoq>4.18.1</AutoFixture_AutoMoq>
+		<AutoFixture_NUnit3>4.18.1</AutoFixture_NUnit3>
+		<AutoFixture_Xunit2>4.18.1</AutoFixture_Xunit2>
+		<Bogus>35.6.0</Bogus>
+		<itext>8.0.5</itext>
+		<itext7_bouncy_castle_adapter>8.0.5</itext7_bouncy_castle_adapter>
+		<Coverlet>6.0.2</Coverlet>
+		<FluentAssertions>6.12.0</FluentAssertions>
+		<Microsoft_Mvc_Testing>8.0.8</Microsoft_Mvc_Testing>
+		<Microsoft_Test_SDK>17.10.0</Microsoft_Test_SDK>
+		<Moq>4.20.70</Moq>
+		<Moq_AutoMock>3.5.0</Moq_AutoMock>
+		<dotnet_reportgenerator_cli>4.5.8</dotnet_reportgenerator_cli>
+		<NUnit>4.1.0</NUnit>
+		<NSubstitute>5.1.0</NSubstitute>
+		<XUnit>2.9.0</XUnit>
+		<XUnit_Runner>2.8.2</XUnit_Runner>
+		<XunitXml_TestLogger>3.1.20</XunitXml_TestLogger>
+		<SpecFlow_Plus_LivingDocPlugin>3.9.57</SpecFlow_Plus_LivingDocPlugin>
+		<SpecFlow_xUnit>3.9.74</SpecFlow_xUnit>
+		<SpecFlow>3.9.40</SpecFlow>
+
+	</PropertyGroup>
+</Project>

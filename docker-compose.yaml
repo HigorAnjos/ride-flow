@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_service
+    ports:
+      - "5432:5432" # Porta padrão do PostgreSQL
+    environment:
+      POSTGRES_USER: postgres       # Usuário padrão do banco
+      POSTGRES_PASSWORD: secret     # Senha do usuário
+      POSTGRES_DB: RIDE_FLOW      # Banco de dados inicial
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persistência de dados
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_service
+    ports:
+      - "5672:5672"   # Porta para conexões AMQP
+      - "15672:15672" # Porta para o painel de gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: user          # Usuário do RabbitMQ
+      RABBITMQ_DEFAULT_PASS: password      # Senha do usuário
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq    # Persistência de dados do RabbitMQ
+
+  mongo_service:
+    image: mongo:6.0
+    container_name: mongo_service
+    ports:
+      - "27017:27017" # Porta padrão do MongoDB
+    volumes:
+      - mongo_data:/data/db # Persistência de dados do MongoDB
+
+volumes:
+  postgres_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  mongo_data:
+    driver: local

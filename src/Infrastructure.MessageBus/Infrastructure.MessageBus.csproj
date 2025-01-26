@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="11.10.0" />
+		<PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.3.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="$(Microsoft_Extensions_Version)" />
+		<PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+		<PackageReference Include="MassTransit" Version="$(MassTransit_Version)" />
+		<PackageReference Include="MassTransit.Newtonsoft" Version="$(MassTransit_Version)" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="$(MassTransit_Version)" />
+		<PackageReference Include="Serilog" Version="$(Serilog_Version)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\contract\Contract\Contract.csproj" />
+	</ItemGroup>
+
+</Project>
