@@ -18,6 +18,7 @@
 	  <None Remove="Scripts\Motorcycle\GetByLicensePlate.sql" />
 	  <None Remove="Scripts\Motorcycle\Update.sql" />
 	  <None Remove="Scripts\Rental\Add.sql" />
+	  <None Remove="Scripts\Rental\CheckRentals.sql" />
 	  <None Remove="Scripts\Rental\GetById.sql" />
 	  <None Remove="Scripts\Rental\UpdateReturnDate.sql" />
 	</ItemGroup>
@@ -34,6 +35,7 @@
 	  <EmbeddedResource Include="Scripts\Motorcycle\GetByLicensePlate.sql" />
 	  <EmbeddedResource Include="Scripts\Motorcycle\Update.sql" />
 	  <EmbeddedResource Include="Scripts\Rental\Add.sql" />
+	  <EmbeddedResource Include="Scripts\Rental\CheckRentals.sql" />
 	  <EmbeddedResource Include="Scripts\Rental\GetById.sql" />
 	  <EmbeddedResource Include="Scripts\Rental\UpdateReturnDate.sql" />
 	</ItemGroup>

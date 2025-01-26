@@ -129,7 +129,7 @@ namespace WebApi.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Mensagem = "Erro interno no servidor.", Detalhes = ex.Message });
+                return StatusCode(400, new { Mensagem = "Dados inválidos", Detalhes = ex.Message });
             }
         }
     }
