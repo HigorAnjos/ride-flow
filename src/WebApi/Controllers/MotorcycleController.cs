@@ -46,11 +46,11 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMotorcycles(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetMotorcycles([FromQuery] string? placa, CancellationToken cancellationToken)
         {
             try
             {
-                var motorcycles = await _getMotorcyclesUseCase.ExecuteAsync(cancellationToken);
+                var motorcycles = await _getMotorcyclesUseCase.ExecuteAsync(cancellationToken, placa);
 
                 if (motorcycles == null || !motorcycles.Any())
                 {
