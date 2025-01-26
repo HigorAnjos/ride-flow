@@ -31,7 +31,6 @@ namespace WebApi.Controllers
                 _rentMotorcycleUseCase.ExecuteAsync(
                     deliveryPersonId: request.Entregador_Id,
                     motorcycleId: request.Moto_Id,
-                    startDate: request.Data_Inicio,
                     planType: request.Plano,
                     null,
                     cancellationToken

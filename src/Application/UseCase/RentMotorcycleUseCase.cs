@@ -10,30 +10,39 @@ namespace Application.UseCase
 {
     public interface IRentMotorcycleUseCase
     {
-        Task<Rental> ExecuteAsync(string deliveryPersonId, string motorcycleId, DateTime startDate, RentalPlanTypeEnum planType, string? rentalId = null, CancellationToken cancellationToken = default);
+        Task<Rental> ExecuteAsync(string deliveryPersonId, string motorcycleId, RentalPlanTypeEnum planType, string? rentalId = null, CancellationToken cancellationToken = default);
     }
 
     public class RentMotorcycleUseCase : BaseUseCase<RentMotorcycleUseCase>, IRentMotorcycleUseCase
     {
         private readonly IRentalRepository _rentalRepository;
+        private readonly IDeliveryPersonRepository _deliveryPersonRepository;
         private readonly IRentalPlanFactory _rentalPlanFactory;
 
         protected override string ActionIdentification { get; } = "RentMotorcycleUseCase";
 
         public RentMotorcycleUseCase(
             IRentalRepository rentalRepository,
+            IDeliveryPersonRepository deliveryPersonRepository,
             IRentalPlanFactory rentalPlanFactory,
             ILoggerService<RentMotorcycleUseCase> logger)
             : base(logger)
         {
             _rentalRepository = rentalRepository ?? throw new ArgumentNullException(nameof(rentalRepository));
+            _deliveryPersonRepository = deliveryPersonRepository ?? throw new ArgumentNullException(nameof(deliveryPersonRepository));
             _rentalPlanFactory = rentalPlanFactory ?? throw new ArgumentNullException(nameof(rentalPlanFactory));
         }
 
-        public async Task<Rental> ExecuteAsync(string deliveryPersonId, string motorcycleId, DateTime startDate, RentalPlanTypeEnum planType, string? rentalId = null, CancellationToken cancellationToken = default)
+        public async Task<Rental> ExecuteAsync(string deliveryPersonId, string motorcycleId, RentalPlanTypeEnum planType, string? rentalId = null, CancellationToken cancellationToken = default)
         {
-            LogInformation("Iniciando processo de locação para Entregador ID: {DeliveryPersonId}, Moto ID: {MotorcycleId}, Data de Início: {StartDate:yyyy-MM-dd}, Plano: {PlanType}, Locação ID: {RentalId}",
-                deliveryPersonId, motorcycleId, startDate, planType, string.IsNullOrWhiteSpace(rentalId) ? "Novo ID será gerado" : rentalId);
+            LogInformation("Iniciando processo de locação para Entregador ID: {DeliveryPersonId}, Moto ID: {MotorcycleId}, Plano: {PlanType}, Locação ID: {RentalId}",
+                deliveryPersonId, motorcycleId, planType, string.IsNullOrWhiteSpace(rentalId) ? "Novo ID será gerado" : rentalId);
+
+            // Valida o entregador
+            await ValidateDeliveryPersonAsync(deliveryPersonId, cancellationToken);
+
+            // Define a data de início como o próximo dia após a data de criação
+            var startDate = DateTime.UtcNow.Date.AddDays(1);
 
             // Cria o plano utilizando a factory
             var rentalPlan = CreateRentalPlan(planType);
@@ -48,6 +57,27 @@ namespace Application.UseCase
             await SaveRentalAsync(rental, cancellationToken);
 
             return rental;
+        }
+
+        private async Task ValidateDeliveryPersonAsync(string deliveryPersonId, CancellationToken cancellationToken)
+        {
+            LogInformation("Validando entregador para locação. ID: {DeliveryPersonId}", deliveryPersonId);
+
+            var deliveryPerson = await _deliveryPersonRepository.GetByIdAsync(deliveryPersonId, cancellationToken);
+
+            if (deliveryPerson == null)
+            {
+                LogWarning("Entregador não encontrado. ID: {DeliveryPersonId}", deliveryPersonId);
+                throw new InvalidDataException($"Entregador com ID {deliveryPersonId} não encontrado.");
+            }
+
+            if (!deliveryPerson.CanRentMotorcycle())
+            {
+                LogWarning("Entregador não habilitado para locação. ID: {DeliveryPersonId}, Tipo de CNH: {LicenseType}", deliveryPersonId, deliveryPerson.LicenseType);
+                throw new InvalidDataException($"Entregador com ID {deliveryPersonId} não está habilitado para locação.");
+            }
+
+            LogInformation("Entregador validado com sucesso. ID: {DeliveryPersonId}", deliveryPersonId);
         }
 
         private IRentalPlan CreateRentalPlan(RentalPlanTypeEnum planType)
@@ -67,7 +97,8 @@ namespace Application.UseCase
 
         private Rental CreateRental(string deliveryPersonId, string motorcycleId, DateTime startDate, string rentalId, IRentalPlan rentalPlan, RentalPlanTypeEnum planType)
         {
-            LogInformation("Criando objeto de locação. Locação ID: {RentalId}, Entregador ID: {DeliveryPersonId}, Moto ID: {MotorcycleId}", rentalId, deliveryPersonId, motorcycleId);
+            LogInformation("Criando objeto de locação. Locação ID: {RentalId}, Entregador ID: {DeliveryPersonId}, Moto ID: {MotorcycleId}, Data de Início: {StartDate}",
+                rentalId, deliveryPersonId, motorcycleId, startDate);
 
             var rental = new Rental
             {
