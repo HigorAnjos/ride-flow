@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Domain.Entities
 {
@@ -33,19 +34,30 @@ namespace Domain.Entities
 
         public bool IsValid()
         {
-            if (string.IsNullOrWhiteSpace(Id))
-                return false;
+            return IsIdValid() &&
+                   IsYearValid() &&
+                   IsModelValid() &&
+                   IsLicensePlateValid();
+        }
 
-            if (Year < 1900 || Year > DateTime.Now.Year + 1)
-                return false;
+        private bool IsIdValid()
+        {
+            return !string.IsNullOrWhiteSpace(Id);
+        }
 
-            if (string.IsNullOrWhiteSpace(Model))
-                return false;
+        private bool IsYearValid()
+        {
+            return Year >= 1900 && Year <= DateTime.Now.Year + 1;
+        }
 
-            if (string.IsNullOrWhiteSpace(LicensePlate) || !IsValidLicensePlate())
-                return false;
+        private bool IsModelValid()
+        {
+            return !string.IsNullOrWhiteSpace(Model);
+        }
 
-            return true;
+        private bool IsLicensePlateValid()
+        {
+            return !string.IsNullOrWhiteSpace(LicensePlate) && IsValidLicensePlate();
         }
     }
 }

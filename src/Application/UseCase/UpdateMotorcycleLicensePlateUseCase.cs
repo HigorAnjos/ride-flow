@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Logging;
 using Application.Abstractions.Repositories;
 using Application.UseCase.Base;
+using Domain.Entities;
 
 namespace Application.UseCase
 {
@@ -54,6 +55,13 @@ namespace Application.UseCase
 
             // Atualiza a placa da moto
             motorcycle.UpdateLicensePlate(newLicensePlate);
+
+            // Validar os dados da motocicleta
+            if (!motorcycle.IsValid())
+            {
+                LogWarning($"Os dados da motocicleta são inválidos. ID: {motorcycle.Id}, Ano: {motorcycle.Year}, Modelo: {motorcycle.Model}, Placa: {motorcycle.LicensePlate}");
+                throw new InvalidDataException("Os dados da motocicleta são inválidos.");
+            }
 
             try
             {
