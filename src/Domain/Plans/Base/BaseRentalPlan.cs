@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Domain.Plans.Base
+﻿namespace Domain.Plans.Base
 {
     public abstract class BaseRentalPlan : IRentalPlan
     {
@@ -13,33 +11,36 @@ namespace Domain.Plans.Base
             DailyRate = dailyRate;
         }
 
-        public decimal CalculateTotalCost(int rentalDays)
+        public decimal CalculateTotalCost(int rentalDays, DateTime expectedEndDate, DateTime? returnDate)
         {
-            return rentalDays * DailyRate;
-        }
-
-        public decimal CalculatePenalty(Rental rental)
-        {
-            if (rental.ReturnDate == null)
+            if (rentalDays <= 0)
                 return 0;
 
-            DateTime returnDate = rental.ReturnDate.Value.Date;
-            DateTime expectedEndDate = rental.ExpectedEndDate.Date;
+            return rentalDays * DailyRate + CalculatePenalty(expectedEndDate, returnDate);
+        }
 
-            if (returnDate < expectedEndDate)
-                return CalculateEarlyReturnPenalty(rental);
+        public decimal CalculatePenalty(DateTime expectedEndDate, DateTime? returnDate)
+        {
+            if (!returnDate.HasValue)
+                return 0;
 
-            if (returnDate > expectedEndDate)
-                return CalculateLateReturnPenalty(rental);
+            DateTime returnDateValue = returnDate.Value.Date;
+
+            if (returnDateValue.Date < expectedEndDate.Date)
+                return CalculateEarlyReturnPenalty(expectedEndDate, returnDateValue);
+
+            if (returnDateValue.Date > expectedEndDate.Date)
+                return CalculateLateReturnPenalty(expectedEndDate, returnDateValue);
 
             return 0;
         }
 
-        protected abstract decimal CalculateEarlyReturnPenalty(Rental rental); // Penalidade antecipada
-        protected virtual decimal CalculateLateReturnPenalty(Rental rental) // Penalidade atrasada (padrão)
+        protected abstract decimal CalculateEarlyReturnPenalty(DateTime expectedEndDate, DateTime returnDate);
+
+        protected virtual decimal CalculateLateReturnPenalty(DateTime expectedEndDate, DateTime returnDate)
         {
-            var additionalDays = (rental.ReturnDate.Value - rental.ExpectedEndDate).Days;
-            return additionalDays * 50m; // Multa fixa de R$50 por dia
+            var additionalDays = (returnDate - expectedEndDate).Days;
+            return additionalDays > 0 ? additionalDays * 50m : 0;
         }
     }
 }

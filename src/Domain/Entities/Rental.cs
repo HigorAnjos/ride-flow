@@ -11,12 +11,12 @@ namespace Domain.Entities
         public string MotorcycleId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; private set; }
-        public DateTime ExpectedEndDate { get; private set; }
+        public DateTime ExpectedEndDate { get; set; }
         public DateTime? ReturnDate { get; set; }
-        public RentalPlanTypeEnum RentalPlanType { get; private set; }
+        public RentalPlanTypeEnum RentalPlanType { get; set; }
 
         [NotMapped]
-        public IRentalPlan RentalPlan { get; private set; }
+        public IRentalPlan RentalPlan { get; set; }
 
         public void SetRentalPlan(IRentalPlan rentalPlan, RentalPlanTypeEnum rentalPlanType)
         {
@@ -28,6 +28,7 @@ namespace Domain.Entities
 
             RentalPlan = rentalPlan;
             RentalPlanType = rentalPlanType;
+            StartDate = DateTime.Now.AddDays(1);
             EndDate = StartDate.AddDays(rentalPlan.DurationInDays);
             ExpectedEndDate = EndDate;
         }
@@ -40,13 +41,14 @@ namespace Domain.Entities
             ReturnDate = returnDate;
         }
 
-        public decimal CalculateTotalCost()
+        public decimal CalculateFinalCost()
         {
             if (RentalPlan == null)
                 throw new InvalidOperationException("O plano de locação não foi definido.");
 
-            var rentalDays = (EndDate - StartDate).Days + 1;
-            return RentalPlan.CalculateTotalCost(rentalDays);
+            var rentalDays = (ReturnDate?.Date - StartDate.Date)?.Days ?? 0;
+
+            return RentalPlan.CalculateTotalCost(rentalDays, ExpectedEndDate, ReturnDate);
         }
 
         public decimal CalculatePenalty()
@@ -54,12 +56,7 @@ namespace Domain.Entities
             if (RentalPlan == null)
                 throw new InvalidOperationException("O plano de locação não foi definido.");
 
-            return RentalPlan.CalculatePenalty(this);
-        }
-
-        public decimal CalculateFinalCost()
-        {
-            return CalculateTotalCost() + CalculatePenalty();
+            return RentalPlan.CalculatePenalty(ExpectedEndDate, ReturnDate);
         }
 
         public bool IsValid()

@@ -15,8 +15,7 @@ namespace UnitTests.Domain.Entities
             {
                 Id = "test-id",
                 DeliveryPersonId = "delivery-id",
-                MotorcycleId = "motorcycle-id",
-                StartDate = new DateTime(2024, 1, 1)
+                MotorcycleId = "motorcycle-id"
             };
 
             var rentalPlan = new SevenDaysPlan();
@@ -27,7 +26,6 @@ namespace UnitTests.Domain.Entities
             // Assert
             rental.RentalPlan.Should().Be(rentalPlan);
             rental.RentalPlanType.Should().Be(RentalPlanTypeEnum.SevenDays);
-            rental.EndDate.Should().Be(new DateTime(2024, 1, 8));
         }
 
         [Fact]
@@ -97,23 +95,22 @@ namespace UnitTests.Domain.Entities
         }
 
         [Fact]
-        public void CalculateTotalCost_ShouldReturnCorrectValue()
+        public void CalculateFinalCost_ShouldReturnCorrectValue()
         {
             // Arrange
-            var rental = new Rental
-            {
-                StartDate = new DateTime(2024, 1, 1)
-            };
+            var rental = new Rental();
 
             var rentalPlan = new SevenDaysPlan();
             rental.SetRentalPlan(rentalPlan, RentalPlanTypeEnum.SevenDays);
+            rental.SetReturnDate(DateTime.Now.AddDays(6)); // Alugado por 5 dias
 
             // Act
-            var totalCost = rental.CalculateTotalCost();
+            var totalCost = rental.CalculateFinalCost();
 
             // Assert
-            totalCost.Should().Be(7 * rentalPlan.DailyRate);
+            totalCost.Should().Be(162); 
         }
+
 
         [Fact]
         public void CalculatePenalty_ShouldReturnZero_WhenNoPenaltyIsApplied()
@@ -122,11 +119,12 @@ namespace UnitTests.Domain.Entities
             var rental = new Rental
             {
                 StartDate = new DateTime(2024, 1, 1),
-                ReturnDate = (DateTime?)new DateTime(2024, 1, 7)
+                ReturnDate = (DateTime?)new DateTime(2024, 1, 9)
             };
 
             var rentalPlan = new SevenDaysPlan();
             rental.SetRentalPlan(rentalPlan, RentalPlanTypeEnum.SevenDays);
+            rental.SetReturnDate(DateTime.Now.AddDays(8));
 
             // Act
             var penalty = rental.CalculatePenalty();

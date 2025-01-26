@@ -1,21 +1,15 @@
-﻿using Domain.Entities;
-using Domain.Plans.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Plans.Base;
 
 namespace Domain.Plans
 {
     public class SevenDaysPlan : BaseRentalPlan
     {
-        public SevenDaysPlan() : base(durationInDays: 7, dailyRate: 30m) { } // Duração de 7 dias, R$30 por dia
+        public SevenDaysPlan() : base(durationInDays: 7, dailyRate: 30m) { }
 
-        protected override decimal CalculateEarlyReturnPenalty(Rental rental)
+        protected override decimal CalculateEarlyReturnPenalty(DateTime expectedEndDate, DateTime returnDate)
         {
-            var daysNotUsed = (rental.ExpectedEndDate - rental.ReturnDate.Value).Days;
-            return daysNotUsed * DailyRate * 0.2m; // Multa de 20% por dia não utilizado
+            var daysNotUsed = (expectedEndDate - returnDate).Days;
+            return daysNotUsed * DailyRate * 0.2m;
         }
     }
 }

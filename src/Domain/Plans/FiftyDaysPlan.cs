@@ -7,7 +7,7 @@ namespace Domain.Plans
     {
         public FiftyDaysPlan() : base(durationInDays:50, dailyRate: 18.00m) { }
 
-        protected override decimal CalculateEarlyReturnPenalty(Rental rental)
+        protected override decimal CalculateEarlyReturnPenalty(DateTime expectedEndDate, DateTime returnDate)
         {
             // Penalidade específica para devolução antecipada (a ser definida no futuro)
             return 0;
