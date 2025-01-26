@@ -23,7 +23,7 @@ namespace Application.UseCase
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Motorcycle> ExecuteAsync(string motorcycleId, CancellationToken cancellation)
+        public async Task<Motorcycle> ExecuteAsync(string motorcycleId, CancellationToken cancellationToken)
         {
             LogInformation($"Iniciando a busca pela motocicleta. ID: {motorcycleId}");
 
@@ -36,7 +36,7 @@ namespace Application.UseCase
             try
             {
                 LogInformation($"Procurando a motocicleta no repositório. ID: {motorcycleId}");
-                var motorcycle = await _repository.GetByIdAsync(motorcycleId);
+                var motorcycle = await _repository.GetByIdAsync(motorcycleId, cancellationToken);
 
                 if (motorcycle == null)
                 {

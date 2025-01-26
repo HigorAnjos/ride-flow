@@ -28,7 +28,7 @@ namespace Application.UseCase
 
             try
             {
-                var motorcycles = await _repository.GetAllAsync();
+                var motorcycles = await _repository.GetAllAsync(cancellationToken);
 
                 if (!string.IsNullOrWhiteSpace(licensePlate))
                 {

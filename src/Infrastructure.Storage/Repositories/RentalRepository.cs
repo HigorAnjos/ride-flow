@@ -122,5 +122,20 @@ namespace Infrastructure.Storage.Repositories
             if (rowsAffected == 0)
                 throw new InvalidOperationException($"Nenhuma locação encontrada com o ID: {rental.Id}.");
         }
+
+        public async Task<bool> HasRentalsAsync(string motorcycleId, CancellationToken cancellationToken)
+        {
+            using var conn = _connectionFactory.CreateConnection(Databases.RIDE_FLOW_POSTGRES);
+            var query = await _scriptLoader.GetCachedScriptAsync(FolderPath, "CheckRentals.sql");
+
+            var command = new CommandDefinition(
+                commandText: query,
+                parameters: new { MotorcycleId = motorcycleId },
+                cancellationToken: cancellationToken
+            );
+
+            var count = await conn.ExecuteScalarAsync<int>(command);
+            return count > 0;
+        }
     }
 }

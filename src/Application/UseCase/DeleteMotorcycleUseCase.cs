@@ -12,15 +12,19 @@ namespace Application.UseCase
 
     public class DeleteMotorcycleUseCase : BaseUseCase<DeleteMotorcycleUseCase>, IDeleteMotorcycleUseCase
     {
-        private readonly IMotorcycleRepository _repository;
+        private readonly IMotorcycleRepository _motorcycleRepository;
+        private readonly IRentalRepository _rentalRepository;
 
         protected override string ActionIdentification { get; } = "DeleteMotorcycleUseCase";
 
-
-        public DeleteMotorcycleUseCase(IMotorcycleRepository repository, ILoggerService<DeleteMotorcycleUseCase> logger)
+        public DeleteMotorcycleUseCase(
+            IMotorcycleRepository motorcycleRepository,
+            IRentalRepository rentalRepository,
+            ILoggerService<DeleteMotorcycleUseCase> logger)
             : base(logger)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _motorcycleRepository = motorcycleRepository ?? throw new ArgumentNullException(nameof(motorcycleRepository));
+            _rentalRepository = rentalRepository ?? throw new ArgumentNullException(nameof(rentalRepository));
         }
 
         public async Task ExecuteAsync(string motorcycleId, CancellationToken cancellationToken)
@@ -35,8 +39,17 @@ namespace Application.UseCase
 
             try
             {
+                // Verificar se existem registros de locações associados à motocicleta
+                var hasRentalRecords = await _rentalRepository.HasRentalsAsync(motorcycleId, cancellationToken);
+                if (hasRentalRecords)
+                {
+                    LogWarning($"A motocicleta com ID: {motorcycleId} possui registros de locações e não pode ser removida.");
+                    throw new InvalidOperationException($"A motocicleta com ID: {motorcycleId} possui registros de locações e não pode ser removida.");
+                }
+
+                // Excluir a motocicleta
                 LogInformation($"Excluindo a motocicleta do repositório. ID: {motorcycleId}");
-                await _repository.DeleteAsync(motorcycleId);
+                await _motorcycleRepository.DeleteAsync(motorcycleId, cancellationToken);
                 LogInformation($"Motocicleta excluída com sucesso. ID: {motorcycleId}");
             }
             catch (Exception ex)

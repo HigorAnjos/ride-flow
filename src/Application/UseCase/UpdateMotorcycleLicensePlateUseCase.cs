@@ -38,7 +38,7 @@ namespace Application.UseCase
             }
 
             // Busca a moto pelo ID
-            var motorcycle = await _repository.GetByIdAsync(motorcycleId);
+            var motorcycle = await _repository.GetByIdAsync(motorcycleId, cancellationToken);
             if (motorcycle == null)
             {
                 LogWarning($"Nenhuma moto encontrada com o ID: {motorcycleId}");
@@ -46,7 +46,7 @@ namespace Application.UseCase
             }
 
             // Verifica se a placa já está em uso
-            var existingMotorcycle = await _repository.GetByLicensePlateAsync(newLicensePlate);
+            var existingMotorcycle = await _repository.GetByLicensePlateAsync(newLicensePlate, cancellationToken);
             if (existingMotorcycle != null && existingMotorcycle.Id != motorcycle.Id)
             {
                 LogWarning($"A nova placa '{newLicensePlate}' já está em uso por outra moto. Moto existente ID: {existingMotorcycle.Id}");
@@ -67,7 +67,7 @@ namespace Application.UseCase
             {
                 // Salva a moto atualizada no repositório
                 LogInformation($"Salvando atualização da placa para a moto com ID: {motorcycleId}");
-                await _repository.UpdateAsync(motorcycle);
+                await _repository.UpdateAsync(motorcycle, cancellationToken);
                 LogInformation($"Placa atualizada com sucesso. Moto ID: {motorcycleId}, Nova Placa: {newLicensePlate}");
             }
             catch (Exception ex)

@@ -56,7 +56,7 @@ namespace Application.UseCase
             }
 
             // Verifica se a placa já existe
-            var existingMotorcycle = await _repository.GetByLicensePlateAsync(motorcycle.LicensePlate);
+            var existingMotorcycle = await _repository.GetByLicensePlateAsync(motorcycle.LicensePlate, cancellationToken);
             if (existingMotorcycle != null)
             {
                 LogWarning($"Já existe uma motocicleta com a placa fornecida: {licensePlate}");
@@ -67,7 +67,7 @@ namespace Application.UseCase
             try
             {
                 LogInformation($"Salvando a motocicleta no repositório. ID: {id}, Placa: {licensePlate}");
-                await _repository.AddAsync(motorcycle);
+                await _repository.AddAsync(motorcycle, cancellationToken);
                 LogInformation($"Motocicleta salva com sucesso. ID: {id}, Placa: {licensePlate}");
             }
             catch (Exception ex)

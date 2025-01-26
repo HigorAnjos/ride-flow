@@ -7,5 +7,6 @@ namespace Application.Abstractions.Repositories
         Task AddAsync(Rental rental, CancellationToken cancellationToken);
         Task<Rental> GetByIdAsync(string id, CancellationToken cancellationToken); 
         Task UpdateReturnDateAsync(Rental rental, CancellationToken cancellationToken);
+        Task<bool> HasRentalsAsync(string motorcycleId, CancellationToken cancellationToken);
     }
 }
