@@ -95,7 +95,7 @@ namespace WebApi.Controllers
                 return Ok(new
                 {
                     Mensagem = "Data de devolução informada com sucesso",
-                    ValorFinal = finalCost
+                    //ValorFinal = finalCost
                 });
             }
             catch (ArgumentException ex)
